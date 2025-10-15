@@ -1,40 +1,33 @@
-import { eq } from "drizzle-orm";
-import type { Context } from "grammy";
+import type { MyContext } from "..";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
-import { db, likes, matches, users } from "../lib/drizzle";
+import db from "../lib/db";
 
-export const getMenuMessage = async (ctx: Context) => {
+export const getMenuMessage = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
   if (!userId) return "Привет, незнакомец!";
 
-  const [existUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId.toString()));
+  const existUser = await db.user.findUnique({
+    where: {
+      id: userId.toString(),
+    },
+  });
   if (!existUser) return "Привет, незнакомец!";
 
-  const countOfLikes = await db
-    .select()
-    .from(likes)
-    .then((res) => res.length);
+  const countOfLikes = await db.like.count();
+  const countOfMatches = await db.match.count();
 
-  const countOfMatches = await db
-    .select()
-    .from(matches)
-    .then((res) => res.length);
-
-  const countOfProfiles = await db
-    .select()
-    .from(users)
-    .where(eq(users.isVisible, true))
-    .then((res) => res.length);
+  const countOfProfiles = await db.user.count({
+    where: {
+      isVisible: true,
+    },
+  });
 
   return `<b>Привет, ${
     existUser.name || "незнакомец"
-  }!</>\nГотов к новым знакомствам? 😉\n\n<blockquote>Анкет в боте: ${countOfProfiles}\nВсего метчей: ${countOfMatches}\nВсего лайков: ${countOfLikes}</blockquote>\n\nВыбери нужный пункт меню ниже:`;
+  }!</>\n\n<blockquote>Анкет в боте: ${countOfProfiles}\nВсего метчей: ${countOfMatches}\nВсего лайков: ${countOfLikes}</blockquote>\n\nВыбери нужный пункт меню ниже:`;
 };
 
-export const menuCommand = async (ctx: Context) => {
+export const menuCommand = async (ctx: MyContext) => {
   const message = await getMenuMessage(ctx);
   return ctx.reply(message, {
     reply_markup: menuCommandKeyboard,

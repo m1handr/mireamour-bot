@@ -1,8 +1,8 @@
-import type { Context } from "grammy";
+import type { MyContext } from "..";
 import { getMenuMessage } from "../commands/menu";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
 
-export const menu = async (ctx: Context) => {
+export const menu = async (ctx: MyContext) => {
   const message = await getMenuMessage(ctx);
   await ctx.deleteMessage();
   await ctx.reply(message, {

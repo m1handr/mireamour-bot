@@ -11,16 +11,19 @@
     "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prisma": "^6.17.1"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@grammyjs/auto-retry": "^2.0.2",
+    "@grammyjs/conversations": "^2.1.0",
     "@grammyjs/ratelimiter": "^1.2.1",
     "@grammyjs/runner": "^2.0.3",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@prisma/client": "^6.17.1",
     "arktype": "^2.1.22",
     "drizzle-kit": "^0.31.5",
     "drizzle-orm": "^0.44.6",

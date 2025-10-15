@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  male
+  female
+  none
+}
+
+enum UserRole {
+  banned
+  default
+  moder
+}
+
+enum LikeType {
+  like
+  dislike
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  age         Int?
+  gender      Gender   @default(none)
+  description String?
+  imageUrls   String[]
+  isVisible   Boolean  @default(false)
+  role        UserRole @default(default)
+  createdAt   DateTime @default(now())
+
+  likesSent     Like[] @relation("likesSent") // исправлено имя
+  likesReceived Like[] @relation("likesReceived") // исправлено имя
+
+  matchesA Match[] @relation("matchesA")
+  matchesB Match[] @relation("matchesB")
+}
+
+model Like {
+  id         String   @id @default(cuid())
+  fromUser   User     @relation("likesSent", fields: [fromUserId], references: [id])
+  fromUserId String
+  toUser     User     @relation("likesReceived", fields: [toUserId], references: [id])
+  toUserId   String
+  type       LikeType @default(like)
+  createdAt  DateTime @default(now())
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  userA     User     @relation("matchesA", fields: [userAId], references: [id])
+  userAId   String
+  userB     User     @relation("matchesB", fields: [userBId], references: [id])
+  userBId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userAId, userBId]) // чтобы не было дубликатов матчей
+}

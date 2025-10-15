@@ -1,6 +1,7 @@
-import type { Context, NextFunction } from "grammy";
+import type { NextFunction } from "grammy";
+import type { MyContext } from "..";
 
-export const deleteUserMessage = async (ctx: Context, next: NextFunction) => {
+export const deleteUserMessage = async (ctx: MyContext, next: NextFunction) => {
   const chatId = ctx.chat?.id;
   if (!chatId) return next();
 

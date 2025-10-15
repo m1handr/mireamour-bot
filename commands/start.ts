@@ -1,7 +1,6 @@
-import { eq } from "drizzle-orm";
-import type { Context } from "grammy";
+import type { MyContext } from "..";
 import { startCommandKeyboard } from "../keyboards/startCommandKeyboard";
-import { db, users } from "../lib/drizzle";
+import db from "../lib/db";
 
 const helloStickers = [
   "CAACAgIAAxkBAAOyaOwLLdPBKt5t_dj0y0CamKNhIvEAAokCAAJWnb0KoVbNAiEyDj02BA",
@@ -9,19 +8,22 @@ const helloStickers = [
   "CAACAgIAAxkBAAO2aOwLZltA_HHsJ-70dJAJ-_hOIL0AAkgAA1KJkSNu2S6onD1PAAE2BA",
 ];
 
-export const startCommand = async (ctx: Context) => {
+export const startCommand = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
   if (!userId) return;
 
-  const [existUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId.toString()));
+  const existUser = await db.user.findUnique({
+    where: {
+      id: userId.toString(),
+    },
+  });
 
   if (!existUser) {
-    await db.insert(users).values({
-      id: userId.toString(),
-      name: ctx.from?.first_name || null,
+    await db.user.create({
+      data: {
+        id: userId.toString(),
+        name: ctx.from?.first_name,
+      },
     });
   }
 

@@ -1,27 +1,33 @@
-import { eq } from "drizzle-orm";
-import { InputMediaBuilder, type Context } from "grammy";
-import { myProfileKeyboard } from "../keyboards/myProfileKeyboard";
-import { db, users } from "../lib/drizzle";
+import { InputMediaBuilder } from "grammy";
+import type { MyContext } from "..";
+import db from "../lib/db";
 
-export const myProfile = async (ctx: Context) => {
+export const myProfile = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
   if (!userId) return;
 
-  const [existUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId.toString()));
+  let existUser = await db.user.findUnique({
+    where: { id: userId.toString() },
+  });
+
   if (!existUser) return;
 
-  await ctx.editMessageMedia(
-    InputMediaBuilder.photo(
-      "https://storage.yandexcloud.net/artel-dev/images/nprab75tgkfbr2xh3l06lsng.webp",
-      {
-        caption: `<b>${existUser.name}, ${existUser.age}</b>`,
+  if (existUser.imageUrls && existUser.imageUrls[0]) {
+    await ctx.editMessageMedia(
+      InputMediaBuilder.photo(existUser.imageUrls[0], {
+        caption: `<b>${existUser.name}, ${
+          existUser.age || "возраст не указан"
+        }</b>`,
         parse_mode: "HTML",
-      }
-    )
-  );
-  await ctx.editMessageReplyMarkup({ reply_markup: myProfileKeyboard });
+      })
+    );
+  } else {
+    await ctx.editMessageText(
+      "Похоже, твоя анкета для знакомства ещё не заполнена 😅\n\n" +
+        "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨"
+    );
+    await ctx.conversation.enter("create-profile");
+  }
+
   await ctx.answerCallbackQuery();
 };
