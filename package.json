@@ -8,9 +8,11 @@
     "db:push": "drizzle-kit push --force",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "format": "biome format --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.6",
     "@types/bun": "latest",
     "prisma": "^6.17.1"
   },

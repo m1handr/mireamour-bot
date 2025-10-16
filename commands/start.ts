@@ -28,8 +28,8 @@ export const startCommand = async (ctx: MyContext) => {
   }
 
   const randomSticker =
-    helloStickers[Math.floor(Math.random() * helloStickers.length)]!;
-  await ctx.replyWithSticker(randomSticker);
+    helloStickers[Math.floor(Math.random() * helloStickers.length)];
+  if (randomSticker) await ctx.replyWithSticker(randomSticker);
   return ctx.reply(
     `<b>Привет, ${ctx.from?.first_name || "незнакомец"}! 👋</b>\n
 Это <b>МИРЭАмур</b> — бот для знакомств студентов МИРЭА.\n
@@ -39,6 +39,6 @@ export const startCommand = async (ctx: MyContext) => {
       parse_mode: "HTML",
       link_preview_options: { is_disabled: true },
       reply_markup: startCommandKeyboard,
-    }
+    },
   );
 };
