@@ -58,7 +58,6 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     await cb.answerCallbackQuery();
   }
 
-  // Блок описания (необязательный)
   await ctx.reply(
     "📝 *Расскажи о себе*\n\n_Можно написать о своих интересах, увлечениях или чем ты занимаешься. Не более 500 символов._",
     {
@@ -149,6 +148,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
       gender,
       description,
       imageUrls,
+      isVisible: true,
     },
   });
 

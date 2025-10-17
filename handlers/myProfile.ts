@@ -25,8 +25,9 @@ export const myProfile = async (ctx: MyContext) => {
         parse_mode: "HTML",
       }),
     );
+    const keyboard = await myProfileKeyboard(ctx);
     await ctx.editMessageReplyMarkup({
-      reply_markup: myProfileKeyboard,
+      reply_markup: keyboard,
     });
   } else {
     await ctx.editMessageText(
