@@ -5,7 +5,7 @@ const LIKE_EXPIRATION_DAYS = 90;
 
 export async function getRandomProfile(
   userId: string,
-  gender: Gender
+  gender: Gender,
 ): Promise<User | null> {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() - LIKE_EXPIRATION_DAYS);

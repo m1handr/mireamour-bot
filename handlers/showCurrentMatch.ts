@@ -31,7 +31,7 @@ export async function showCurrentMatch(ctx: MyContext) {
     InputMediaBuilder.photo(matchUser.imageUrls[0], {
       caption: getProfileMessage(matchUser),
       parse_mode: "HTML",
-    })
+    }),
   );
   await ctx.editMessageReplyMarkup({
     reply_markup: matchesList.length > 1 ? matchesKeyboard : backKeyboard,

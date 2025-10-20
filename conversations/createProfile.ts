@@ -3,6 +3,7 @@ import type { Context } from "grammy";
 import { randomUUID } from "node:crypto";
 import type { MyContext } from "..";
 import { menuCommand } from "../commands/menu";
+import { profileCreatedKeyboard } from "../keyboards/profileCreatedKeyboard";
 import db from "../lib/db";
 import type { Gender } from "../lib/generated/prisma";
 import { S3_BUCKET_NAME, S3_ENDPOINT, s3 } from "../lib/s3";
@@ -163,7 +164,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
       `*Пол:* ${genderText}\n` +
       `*Описание:* ${descriptionPreview}\n\n` +
       `Теперь можно пользоваться ботом в полном объеме! ✨`,
-    { parse_mode: "Markdown" },
+    { parse_mode: "Markdown", reply_markup: profileCreatedKeyboard },
   );
 
   await menuCommand(ctx as MyContext);

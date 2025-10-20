@@ -1,11 +1,11 @@
 import { Composer } from "grammy";
 import type { MyContext } from "..";
-import { editProfile } from "./editProfile";
 import { setDislike, setLike } from "./handleLike";
 import { matches } from "./matches";
 import { menu } from "./menu";
 import { myProfile } from "./myProfile";
 import { rateProfiles } from "./rateProfiles";
+import { recreateProfile } from "./recreateProfile";
 import { showCurrentMatch } from "./showCurrentMatch";
 import { disableProfile, enableProfile } from "./toggleProfile";
 
@@ -14,9 +14,9 @@ export const handlers = new Composer<MyContext>();
 handlers.callbackQuery("menu", menu);
 handlers.callbackQuery("my-profile", myProfile);
 handlers.callbackQuery("matches", matches);
+handlers.callbackQuery("recreate-profile", recreateProfile);
 handlers.callbackQuery("disable-profile", disableProfile);
 handlers.callbackQuery("enable-profile", enableProfile);
-handlers.callbackQuery("edit-profile", editProfile);
 handlers.callbackQuery("rate-profiles", rateProfiles);
 handlers.callbackQuery("like-profile", setLike);
 handlers.callbackQuery("dislike-profile", setDislike);

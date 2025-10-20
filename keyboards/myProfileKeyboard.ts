@@ -12,7 +12,7 @@ export const myProfileKeyboard = async (ctx: MyContext) => {
   });
 
   const keyboard = new InlineKeyboard()
-    .text("📝 Редактировать профиль", "edit-profile")
+    .text("📝 Заполнить профиль заново", "recreate-profile")
     .row();
 
   if (user?.isVisible) {

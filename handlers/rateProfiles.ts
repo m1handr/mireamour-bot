@@ -23,7 +23,7 @@ export const rateProfiles = async (ctx: MyContext) => {
         "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨",
       {
         reply_markup: backKeyboard,
-      }
+      },
     );
 
   if (!existUser.isVisible)
@@ -31,12 +31,12 @@ export const rateProfiles = async (ctx: MyContext) => {
       "👀 Чтобы смотреть анкеты других, включи видимость своей профиля в настройках.",
       {
         reply_markup: backKeyboard,
-      }
+      },
     );
 
   const profile = await getRandomProfile(
     userId,
-    existUser.gender === "male" ? "female" : "male"
+    existUser.gender === "male" ? "female" : "male",
   );
 
   if (!profile)
@@ -44,7 +44,7 @@ export const rateProfiles = async (ctx: MyContext) => {
       "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
       {
         reply_markup: backKeyboard,
-      }
+      },
     );
 
   if (!profile.imageUrls[0]) return;
