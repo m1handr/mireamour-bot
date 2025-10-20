@@ -1,9 +1,9 @@
 import { autoRetry } from "@grammyjs/auto-retry";
-import { type ConversationFlavor } from "@grammyjs/conversations";
+import type { ConversationFlavor } from "@grammyjs/conversations";
 import { limit } from "@grammyjs/ratelimiter";
 import { run } from "@grammyjs/runner";
 import { ArkErrors, type } from "arktype";
-import { Bot, Context } from "grammy";
+import { Bot, type Context, type SessionFlavor, session } from "grammy";
 import { commands } from "./commands";
 import { dialogs } from "./conversations";
 import { handlers } from "./handlers";
@@ -21,9 +21,20 @@ if (validationResult instanceof ArkErrors) {
   process.exit(1);
 }
 
-export type MyContext = ConversationFlavor<Context>;
+interface SessionData {
+  currentProfileId: string | null;
+  lastProfileMessageId: number | null;
+}
+
+export type MyContext = ConversationFlavor<Context> &
+  SessionFlavor<SessionData>;
 
 const bot = new Bot<MyContext>(validationResult.TELEGRAM_BOT_TOKEN);
+
+function initial(): SessionData {
+  return { currentProfileId: null, lastProfileMessageId: null };
+}
+bot.use(session({ initial }));
 
 bot.api.config.use(autoRetry());
 bot.use(

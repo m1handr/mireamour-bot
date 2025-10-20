@@ -1,6 +1,6 @@
 import type { MyContext } from "..";
-import { getMenuMessage } from "../commands/menu";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
+import { getMenuMessage } from "../utils/getMenuMessage";
 
 export const menu = async (ctx: MyContext) => {
   const message = await getMenuMessage(ctx);

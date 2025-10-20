@@ -2,6 +2,7 @@ import { InputMediaBuilder } from "grammy";
 import type { MyContext } from "..";
 import { myProfileKeyboard } from "../keyboards/myProfileKeyboard";
 import db from "../lib/db";
+import { getProfileMessage } from "../utils/getProfileMessage";
 
 export const myProfile = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
@@ -16,12 +17,7 @@ export const myProfile = async (ctx: MyContext) => {
   if (existUser.imageUrls?.[0]) {
     await ctx.editMessageMedia(
       InputMediaBuilder.photo(existUser.imageUrls[0], {
-        caption: `${existUser.gender === "female" ? "👩" : "👨"} <b>${
-          existUser.name
-        }, ${existUser.age || "возраст не указан"}</b>\n\n${
-          existUser.description &&
-          `<blockquote>${existUser.description}</blockquote>`
-        }`,
+        caption: getProfileMessage(existUser),
         parse_mode: "HTML",
       }),
     );

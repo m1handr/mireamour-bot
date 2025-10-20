@@ -18,6 +18,8 @@ export const enableProfile = async (ctx: MyContext) => {
   await ctx.editMessageReplyMarkup({
     reply_markup: await myProfileKeyboard(ctx),
   });
+
+  await ctx.answerCallbackQuery();
 };
 
 export const disableProfile = async (ctx: MyContext) => {
@@ -36,4 +38,6 @@ export const disableProfile = async (ctx: MyContext) => {
   await ctx.editMessageReplyMarkup({
     reply_markup: await myProfileKeyboard(ctx),
   });
+
+  await ctx.answerCallbackQuery();
 };

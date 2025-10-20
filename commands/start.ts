@@ -1,6 +1,7 @@
 import type { MyContext } from "..";
 import { startCommandKeyboard } from "../keyboards/startCommandKeyboard";
 import db from "../lib/db";
+import { removeLastProfileButtons } from "../utils/removeLastProfileButtons";
 
 const helloStickers = [
   "CAACAgIAAxkBAAOyaOwLLdPBKt5t_dj0y0CamKNhIvEAAokCAAJWnb0KoVbNAiEyDj02BA",
@@ -11,6 +12,8 @@ const helloStickers = [
 export const startCommand = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
   if (!userId) return;
+
+  await removeLastProfileButtons(ctx);
 
   const existUser = await db.user.findUnique({
     where: {

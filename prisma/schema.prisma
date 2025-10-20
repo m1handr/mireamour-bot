@@ -36,8 +36,8 @@ model User {
   role        UserRole @default(default)
   createdAt   DateTime @default(now())
 
-  likesSent     Like[] @relation("likesSent") // исправлено имя
-  likesReceived Like[] @relation("likesReceived") // исправлено имя
+  likesSent     Like[] @relation("likesSent")
+  likesReceived Like[] @relation("likesReceived")
 
   matchesA Match[] @relation("matchesA")
   matchesB Match[] @relation("matchesB")
@@ -51,6 +51,8 @@ model Like {
   toUserId   String
   type       LikeType @default(like)
   createdAt  DateTime @default(now())
+
+  @@unique([fromUserId, toUserId])
 }
 
 model Match {
