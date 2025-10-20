@@ -1,4 +1,5 @@
 import type { MyContext } from "..";
+import { showMatch } from "../keyboards/showMatch";
 import db from "../lib/db";
 import { rateProfiles } from "./rateProfiles";
 
@@ -39,14 +40,11 @@ async function setReaction(ctx: MyContext, type: "like" | "dislike") {
         data: { userAId: userId, userBId: targetId },
       });
 
-      await ctx.api.sendMessage(
-        targetId,
-        `🎉 У вас взаимная симпатия с ${
-          ctx.callbackQuery?.message?.chat?.first_name || "новым пользователем"
-        }!`,
-      );
+      await ctx.api.sendMessage(targetId, "🎉 У вас новый метч!", {
+        reply_markup: showMatch,
+      });
 
-      await ctx.answerCallbackQuery({ text: "Совпадение! 💫" });
+      await ctx.answerCallbackQuery({ text: "Метч! 💫" });
     } else {
       await ctx.answerCallbackQuery({ text: "Лайк отправлен ❤️" });
     }
@@ -58,6 +56,5 @@ async function setReaction(ctx: MyContext, type: "like" | "dislike") {
   await ctx.answerCallbackQuery();
 }
 
-// Теперь просто делаем обёртки для удобства
 export const setLike = (ctx: MyContext) => setReaction(ctx, "like");
 export const setDislike = (ctx: MyContext) => setReaction(ctx, "dislike");
