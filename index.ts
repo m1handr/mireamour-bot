@@ -7,6 +7,7 @@ import { Bot, type Context, type SessionFlavor, session } from "grammy";
 import { commands } from "./commands";
 import { dialogs } from "./conversations";
 import { handlers } from "./handlers";
+import type { Match, User } from "./lib/generated/prisma";
 import { middlewares } from "./middlewares";
 
 const envSchema = type({
@@ -24,6 +25,8 @@ if (validationResult instanceof ArkErrors) {
 interface SessionData {
   currentProfileId: string | null;
   lastProfileMessageId: number | null;
+  matchesList: (Match & { userA: User; userB: User })[] | null;
+  matchesIndex: number;
 }
 
 export type MyContext = ConversationFlavor<Context> &
@@ -32,7 +35,12 @@ export type MyContext = ConversationFlavor<Context> &
 const bot = new Bot<MyContext>(validationResult.TELEGRAM_BOT_TOKEN);
 
 function initial(): SessionData {
-  return { currentProfileId: null, lastProfileMessageId: null };
+  return {
+    currentProfileId: null,
+    lastProfileMessageId: null,
+    matchesList: [],
+    matchesIndex: 0,
+  };
 }
 bot.use(session({ initial }));
 
@@ -43,10 +51,10 @@ bot.use(
     limit: 3,
     onLimitExceeded: async (ctx) => {
       await ctx.reply(
-        "Пожалуйста, воздержитесь от отправки слишком большого количества сообщений!",
+        "Пожалуйста, воздержитесь от отправки слишком большого количества сообщений!"
       );
     },
-  }),
+  })
 );
 bot.use(dialogs);
 

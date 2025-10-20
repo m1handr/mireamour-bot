@@ -1,41 +1,27 @@
 import type { MyContext } from "..";
-import { matchesKeyboard } from "../keyboards/matchesKeyboard";
+import { backKeyboard } from "../keyboards/backKeyboard";
 import db from "../lib/db";
+import { showCurrentMatch } from "./showCurrentMatch";
 
 export const matches = async (ctx: MyContext) => {
   const userId = ctx.from?.id.toString();
+  if (!userId) return;
 
   const userMatches = await db.match.findMany({
-    where: {
-      OR: [{ userAId: userId }, { userBId: userId }],
-    },
-    include: {
-      userA: true,
-      userB: true,
-    },
+    where: { OR: [{ userAId: userId }, { userBId: userId }] },
+    include: { userA: true, userB: true },
+    orderBy: { createdAt: "desc" },
   });
+
+  ctx.session.matchesList = userMatches;
+  ctx.session.matchesIndex = 0;
 
   if (userMatches.length === 0) {
     await ctx.editMessageText("💫 Пока у тебя нет метчей", {
-      reply_markup: matchesKeyboard,
+      reply_markup: backKeyboard,
     });
     return ctx.answerCallbackQuery();
   }
 
-  const matchList = userMatches
-    .map((m) => {
-      const matchUser = m.userAId === userId ? m.userB : m.userA;
-      return `• ${matchUser?.name ?? "Без имени"}`;
-    })
-    .join("\n");
-
-  const text =
-    `💞 Твои метчи:\n\n${matchList}\n\n` +
-    "Пиши первыми — кто знает, к чему это приведёт 😉";
-
-  await ctx.editMessageText(text, {
-    reply_markup: matchesKeyboard,
-  });
-
-  await ctx.answerCallbackQuery();
+  await showCurrentMatch(ctx);
 };

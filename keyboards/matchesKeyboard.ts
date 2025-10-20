@@ -1,7 +1,7 @@
 import { InlineKeyboard } from "grammy";
 
 export const matchesKeyboard = new InlineKeyboard()
-  .text("⏪️", "left")
-  .text("⏩️", "right")
+  .text("⏪️", "matches-prev")
+  .text("⏩️", "matches-next")
   .row()
   .text("⬅️ Назад", "menu");

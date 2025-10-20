@@ -5,7 +5,7 @@ const LIKE_EXPIRATION_DAYS = 90;
 
 export async function getRandomProfile(
   userId: string,
-  gender: Gender,
+  gender: Gender
 ): Promise<User | null> {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() - LIKE_EXPIRATION_DAYS);
@@ -18,10 +18,17 @@ export async function getRandomProfile(
       likesReceived: {
         none: {
           fromUserId: userId,
-          toUserId: userId,
           createdAt: { gt: expirationDate },
         },
       },
+      AND: [
+        {
+          matchesA: { none: { userBId: userId } },
+        },
+        {
+          matchesB: { none: { userAId: userId } },
+        },
+      ],
     },
   });
 
@@ -33,12 +40,21 @@ export async function getRandomProfile(
     where: {
       id: { not: userId },
       isVisible: true,
+      gender,
       likesReceived: {
         none: {
           fromUserId: userId,
           createdAt: { gt: expirationDate },
         },
       },
+      AND: [
+        {
+          matchesA: { none: { userBId: userId } },
+        },
+        {
+          matchesB: { none: { userAId: userId } },
+        },
+      ],
     },
     skip: randomOffset,
     take: 1,
