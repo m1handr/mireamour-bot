@@ -28,6 +28,7 @@ enum LikeType {
 model User {
   id          String   @id @default(cuid())
   name        String
+  username    String?
   age         Int?
   gender      Gender   @default(none)
   description String?

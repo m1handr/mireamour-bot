@@ -26,6 +26,7 @@ export const startCommand = async (ctx: MyContext) => {
       data: {
         id: userId.toString(),
         name: ctx.from?.first_name,
+        username: ctx.from?.username,
       },
     });
   }

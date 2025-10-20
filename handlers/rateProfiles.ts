@@ -18,7 +18,7 @@ export const rateProfiles = async (ctx: MyContext) => {
   if (!existUser) return;
 
   if (!existUser.imageUrls?.[0])
-    return await ctx.reply(
+    return await ctx.editMessageText(
       "Похоже, твоя анкета для знакомства ещё не заполнена 😅\n\n" +
         "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨",
       {
@@ -27,7 +27,7 @@ export const rateProfiles = async (ctx: MyContext) => {
     );
 
   if (!existUser.isVisible)
-    return await ctx.reply(
+    return await ctx.editMessageText(
       "👀 Чтобы смотреть анкеты других, включи видимость своей профиля в настройках.",
       {
         reply_markup: backKeyboard,
@@ -40,7 +40,7 @@ export const rateProfiles = async (ctx: MyContext) => {
   );
 
   if (!profile)
-    return await ctx.reply(
+    return await ctx.editMessageText(
       "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
       {
         reply_markup: backKeyboard,

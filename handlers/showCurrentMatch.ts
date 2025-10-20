@@ -29,7 +29,7 @@ export async function showCurrentMatch(ctx: MyContext) {
 
   await ctx.editMessageMedia(
     InputMediaBuilder.photo(matchUser.imageUrls[0], {
-      caption: getProfileMessage(matchUser),
+      caption: getProfileMessage(matchUser, true),
       parse_mode: "HTML",
     }),
   );
