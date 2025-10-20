@@ -7,9 +7,14 @@ export const getProfileMessage = (user: User, showUsername = false) => {
     namePart = `<a href="https://t.me/${user.username}">${user.name}</a>`;
   }
 
+  const bannedNotice =
+    user.role === "banned"
+      ? "<b>🚫 Профиль заблокирован.</b> \nВы можете попробовать оспорить блокировку, написав в техническую поддержку.\n\n"
+      : "";
+
   return `${user.gender === "female" ? "👩" : "👨"} <b>${namePart}, ${
     user.age ?? ""
-  }</b>\n\n${
+  }</b>\n\n${bannedNotice}${
     user.description ? `<blockquote>${user.description}</blockquote>` : ""
   }`;
 };

@@ -40,7 +40,7 @@ export const rateProfiles = async (ctx: MyContext) => {
   );
 
   if (!profile)
-    return await ctx.editMessageText(
+    return await ctx.reply(
       "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
       {
         reply_markup: backKeyboard,

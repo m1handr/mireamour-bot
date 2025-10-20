@@ -64,5 +64,13 @@ model Match {
   userBId   String
   createdAt DateTime @default(now())
 
-  @@unique([userAId, userBId]) // чтобы не было дубликатов матчей
+  @@unique([userAId, userBId])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  reason     String?
+  createdAt  DateTime @default(now())
 }
