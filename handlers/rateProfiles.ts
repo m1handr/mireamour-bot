@@ -7,6 +7,7 @@ import { getRandomProfile } from "../utils/getRamdomProfile";
 import { removeLastProfileButtons } from "../utils/removeLastProfileButtons";
 
 export const rateProfiles = async (ctx: MyContext) => {
+  ctx.session.isViewingLikes = false;
   const userId = ctx.from?.id.toString();
   if (!userId) return;
 

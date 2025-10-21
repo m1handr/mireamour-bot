@@ -29,6 +29,7 @@ interface SessionData {
   matchesIndex: number;
   likesList: (User | null)[] | null;
   likesIndex: number;
+  isViewingLikes: boolean;
 }
 
 export type MyContext = ConversationFlavor<Context> &
@@ -44,6 +45,7 @@ function initial(): SessionData {
     matchesIndex: 0,
     likesList: [],
     likesIndex: 0,
+    isViewingLikes: false,
   };
 }
 bot.use(session({ initial }));

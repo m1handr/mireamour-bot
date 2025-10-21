@@ -11,6 +11,7 @@ export const likes = async (ctx: MyContext) => {
     return ctx.reply("💌 Пока никто не ставил тебе лайк");
   }
 
+  ctx.session.isViewingLikes = true;
   ctx.session.likesList = users;
   ctx.session.likesIndex = 0;
 
