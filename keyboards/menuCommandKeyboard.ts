@@ -11,11 +11,16 @@ export const menuCommandKeyboard = async (ctx: MyContext) => {
       OR: [{ userAId: userId }, { userBId: userId }],
     },
   });
+  const countOfLikes = await db.like.count({
+    where: { toUserId: userId, type: "like" },
+  });
 
   const keyboard = new InlineKeyboard()
     .text("👀 Смотреть анкеты", "rate-profiles")
     .row()
     .text(`💕 Метчи (${countOfMatches})`, "matches")
+    .text(`👍 Лайки (${countOfLikes})`, "likes")
+    .row()
     .text("👤 Моя анкета", "my-profile");
 
   return keyboard;

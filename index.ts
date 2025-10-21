@@ -27,6 +27,8 @@ interface SessionData {
   lastProfileMessageId: number | null;
   matchesList: (Match & { userA: User; userB: User })[] | null;
   matchesIndex: number;
+  likesList: (User | null)[] | null;
+  likesIndex: number;
 }
 
 export type MyContext = ConversationFlavor<Context> &
@@ -40,6 +42,8 @@ function initial(): SessionData {
     lastProfileMessageId: null,
     matchesList: [],
     matchesIndex: 0,
+    likesList: [],
+    likesIndex: 0,
   };
 }
 bot.use(session({ initial }));
