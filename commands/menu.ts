@@ -2,6 +2,7 @@ import type { MyContext } from "..";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
 import { ensureUsername } from "../utils/ensureUsername";
 import { getMenuMessage } from "../utils/getMenuMessage";
+import { isSubscribed } from "../utils/isSubscribed";
 import { removeLastProfileButtons } from "../utils/removeLastProfileButtons";
 
 export const menuCommand = async (ctx: MyContext) => {
@@ -9,6 +10,8 @@ export const menuCommand = async (ctx: MyContext) => {
 
   await removeLastProfileButtons(ctx);
   await ensureUsername(ctx);
+  const subscribed = await isSubscribed(ctx);
+  if (!subscribed) return;
 
   const keyboard = await menuCommandKeyboard(ctx);
   return ctx.reply(message, {

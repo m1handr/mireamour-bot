@@ -1,6 +1,7 @@
 import { Composer } from "grammy";
 import type { MyContext } from "..";
 import { banUser } from "./banUser";
+import { checkSubCallback } from "./checkSubCallback";
 import { setDislike, setLike } from "./handleLike";
 import { likes } from "./likes";
 import { matches } from "./matches";
@@ -16,6 +17,7 @@ import { disableProfile, enableProfile } from "./toggleProfile";
 export const handlers = new Composer<MyContext>();
 
 handlers.callbackQuery("menu", menu);
+handlers.callbackQuery("check-sub", checkSubCallback);
 handlers.callbackQuery("my-profile", myProfile);
 handlers.callbackQuery("matches", matches);
 handlers.callbackQuery("likes", likes);

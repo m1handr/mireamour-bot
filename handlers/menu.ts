@@ -2,10 +2,13 @@ import type { MyContext } from "..";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
 import { ensureUsername } from "../utils/ensureUsername";
 import { getMenuMessage } from "../utils/getMenuMessage";
+import { isSubscribed } from "../utils/isSubscribed";
 
 export const menu = async (ctx: MyContext) => {
   const message = await getMenuMessage(ctx);
   await ensureUsername(ctx);
+  const subscribed = await isSubscribed(ctx);
+  if (!subscribed) return;
 
   await ctx.deleteMessage();
 
