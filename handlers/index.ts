@@ -12,6 +12,14 @@ import { recreateProfile } from "./recreateProfile";
 import { reportProfile, reportReason } from "./reportProfile";
 import { showCurrentLike } from "./showCurrentLike";
 import { showCurrentMatch } from "./showCurrentMatch";
+import {
+  handleStatsActivity,
+  handleStatsFull,
+  handleStatsQuick,
+  handleStatsRefresh,
+  handleStatsReports,
+  handleStatsUsers,
+} from "./statsHandlers";
 import { disableProfile, enableProfile } from "./toggleProfile";
 
 export const handlers = new Composer<MyContext>();
@@ -35,6 +43,13 @@ handlers.callbackQuery(/^ban-user-(.+)$/, async (ctx: MyContext) => {
 
   await banUser(ctx, targetId);
 });
+
+handlers.callbackQuery("stats_full", handleStatsFull);
+handlers.callbackQuery("stats_users", handleStatsUsers);
+handlers.callbackQuery("stats_activity", handleStatsActivity);
+handlers.callbackQuery("stats_quick", handleStatsQuick);
+handlers.callbackQuery("stats_refresh", handleStatsRefresh);
+handlers.callbackQuery("stats_reports", handleStatsReports);
 
 handlers.callbackQuery("matches-next", async (ctx) => {
   if (!ctx.session.matchesList?.length) return;

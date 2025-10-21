@@ -1,6 +1,7 @@
 import { InlineKeyboard } from "grammy";
 import type { MyContext } from "..";
 import db from "../lib/db";
+import { config } from "../lib/env";
 import { getProfileMessage } from "./getProfileMessage";
 
 export async function notifyAdminAboutReport(
@@ -9,9 +10,6 @@ export async function notifyAdminAboutReport(
   reporterId: string,
   reason: string,
 ) {
-  const adminId = process.env.ADMIN_CHAT_ID;
-  if (!adminId) return;
-
   const targetUser = await db.user.findUnique({
     where: { id: targetId },
   });
@@ -43,13 +41,13 @@ export async function notifyAdminAboutReport(
   const text = `${profileText}\n\n${reportText}`;
 
   if (targetUser.imageUrls?.[0]) {
-    await ctx.api.sendPhoto(adminId, targetUser.imageUrls[0], {
+    await ctx.api.sendPhoto(config.ADMIN_CHAT_ID, targetUser.imageUrls[0], {
       caption: text,
       parse_mode: "HTML",
       reply_markup: keyboard,
     });
   } else {
-    await ctx.api.sendMessage(adminId, text, {
+    await ctx.api.sendMessage(config.ADMIN_CHAT_ID, text, {
       parse_mode: "HTML",
       reply_markup: keyboard,
     });

@@ -2,25 +2,15 @@ import { autoRetry } from "@grammyjs/auto-retry";
 import type { ConversationFlavor } from "@grammyjs/conversations";
 import { limit } from "@grammyjs/ratelimiter";
 import { run } from "@grammyjs/runner";
-import { ArkErrors, type } from "arktype";
 import { Bot, type Context, type SessionFlavor, session } from "grammy";
 import { commands } from "./commands";
 import { dialogs } from "./conversations";
 import { handlers } from "./handlers";
+import db from "./lib/db";
+import { config } from "./lib/env";
 import type { Match, User } from "./lib/generated/prisma";
+import { logger } from "./lib/logger";
 import { middlewares } from "./middlewares";
-
-const envSchema = type({
-  TELEGRAM_BOT_TOKEN: "string",
-  DATABASE_URL: "string",
-});
-
-const validationResult = envSchema(process.env);
-
-if (validationResult instanceof ArkErrors) {
-  console.error("❌ Ошибка валидации .env");
-  process.exit(1);
-}
 
 interface SessionData {
   currentProfileId: string | null;
@@ -35,7 +25,7 @@ interface SessionData {
 export type MyContext = ConversationFlavor<Context> &
   SessionFlavor<SessionData>;
 
-const bot = new Bot<MyContext>(validationResult.TELEGRAM_BOT_TOKEN);
+const bot = new Bot<MyContext>(config.TELEGRAM_BOT_TOKEN);
 
 function initial(): SessionData {
   return {
@@ -62,19 +52,38 @@ bot.use(
     },
   }),
 );
+
 bot.use(dialogs);
-
 await bot.init();
-
 bot.use(middlewares);
 bot.use(commands);
 bot.use(handlers);
 
 const runner = run(bot);
 if (runner.isRunning()) {
-  console.log(`✅ Бот ${bot.botInfo.username} запущен`);
+  logger.info(`✅ Бот ${bot.botInfo.username} запущен`);
 }
 
-const stopRunner = () => runner.isRunning() && runner.stop();
-process.once("SIGINT", stopRunner);
-process.once("SIGTERM", stopRunner);
+const gracefulShutdown = async (signal: string) => {
+  logger.info(`Получен сигнал ${signal}, завершаем работу...`);
+
+  try {
+    await runner.stop();
+    logger.info("Runner остановлен");
+  } catch (error) {
+    logger.error({ err: error }, "Ошибка при остановке runner");
+  }
+
+  try {
+    await db.$disconnect();
+    logger.info("База данных отключена");
+  } catch (error) {
+    logger.error({ err: error }, "Ошибка при отключении от БД");
+  }
+
+  logger.info("Бот успешно остановлен");
+  process.exit(0);
+};
+
+process.once("SIGINT", () => gracefulShutdown("SIGINT"));
+process.once("SIGTERM", () => gracefulShutdown("SIGTERM"));

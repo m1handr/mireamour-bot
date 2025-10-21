@@ -1,13 +1,12 @@
 import type { MyContext } from "..";
+import { config } from "../lib/env";
 
 export const isSubscribed = async (ctx: MyContext) => {
-  const channelId = process.env.CHANNEL_ID;
   const userId = ctx.from?.id;
-
-  if (!channelId || !userId) return;
+  if (!userId) return;
 
   try {
-    const member = await ctx.api.getChatMember(channelId, userId);
+    const member = await ctx.api.getChatMember(config.CHANNEL_ID, userId);
 
     if (
       member.status === "left" ||
@@ -23,7 +22,7 @@ export const isSubscribed = async (ctx: MyContext) => {
               [
                 {
                   text: "🔗 Перейти к каналу",
-                  url: `https://t.me/${process.env.CHANNEL_USERNAME}`,
+                  url: `https://t.me/${config.CHANNEL_USERNAME}`,
                 },
               ],
               [{ text: "✅ Проверить подписку", callback_data: "check-sub" }],

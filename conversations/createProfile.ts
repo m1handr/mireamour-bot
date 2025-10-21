@@ -5,6 +5,7 @@ import type { MyContext } from "..";
 import { menuCommand } from "../commands/menu";
 import { profileCreatedKeyboard } from "../keyboards/profileCreatedKeyboard";
 import db from "../lib/db";
+import { config } from "../lib/env";
 import type { Gender } from "../lib/generated/prisma";
 import { S3_BUCKET_NAME, S3_ENDPOINT, s3 } from "../lib/s3";
 
@@ -130,7 +131,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     }
 
     const fileInfo = await ctx.api.getFile(photo.file_id);
-    const fileUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${fileInfo.file_path}`;
+    const fileUrl = `https://api.telegram.org/file/bot${config.TELEGRAM_BOT_TOKEN}/${fileInfo.file_path}`;
 
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());

@@ -1,8 +1,9 @@
 import type { MyContext } from "..";
+import { config } from "../lib/env";
 import { menu } from "./menu";
 
 export const checkSubCallback = async (ctx: MyContext) => {
-  const channelId = process.env.CHANNEL_ID;
+  const channelId = config.CHANNEL_ID;
   const userId = ctx.from?.id;
   if (!channelId || !userId) return;
 
