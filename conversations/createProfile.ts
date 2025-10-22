@@ -8,6 +8,7 @@ import db from "../lib/db";
 import { config } from "../lib/env";
 import type { Gender } from "../lib/generated/prisma";
 import { S3_BUCKET_NAME, S3_ENDPOINT, s3 } from "../lib/s3";
+import { optimizeImage } from "../utils/optimizeImage";
 
 export const createProfile = async (conv: Conversation, ctx: Context) => {
   let age: number | null = null;
@@ -69,7 +70,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
           [{ text: "⏭ Пропустить", callback_data: "skip_description" }],
         ],
       },
-    },
+    }
   );
 
   let descriptionSet = false;
@@ -85,7 +86,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
       const text = descResponse.message.text;
       if (!text)
         return ctx.reply(
-          "❌ Не удалось получить текст сообщения. Попробуй ещё раз.",
+          "❌ Не удалось получить текст сообщения. Попробуй ещё раз."
         );
 
       if (text.length > 500) {
@@ -93,7 +94,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
           `❌ *Слишком длинное описание*\n\nТвое описание содержит ${text.length} символов, что превышает лимит в 500 символов. Сократи его и отправь снова.`,
           {
             parse_mode: "Markdown",
-          },
+          }
         );
       } else {
         description = text;
@@ -102,12 +103,12 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
           `✅ *Описание сохранено!* ${text.length}/500 символов`,
           {
             parse_mode: "Markdown",
-          },
+          }
         );
       }
     } else {
       await ctx.reply(
-        "❌ Пожалуйста, отправь текстовое сообщение или нажми 'Пропустить'",
+        "❌ Пожалуйста, отправь текстовое сообщение или нажми 'Пропустить'"
       );
     }
   }
@@ -116,7 +117,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     "📸 *Теперь отправь свою фотографию*\n\n_Лучше всего подойдет твое настоящее фото — так больше шансов найти интересных собеседников_",
     {
       parse_mode: "Markdown",
-    },
+    }
   );
 
   while (!imageUrls) {
@@ -136,9 +137,10 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());
 
-    const key = `profiles/${ctx.from?.id}/${randomUUID()}.jpg`;
+    const optimizedImageBuffer = await optimizeImage(buffer);
+    const key = `profiles/${ctx.from?.id}/${randomUUID()}.webp`;
 
-    await s3.write(key, buffer);
+    await s3.write(key, optimizedImageBuffer);
 
     imageUrls = [`${S3_ENDPOINT}/${S3_BUCKET_NAME}/${key}`];
   }
@@ -165,7 +167,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
       `*Пол:* ${genderText}\n` +
       `*Описание:* ${descriptionPreview}\n\n` +
       `Теперь можно пользоваться ботом в полном объеме! ✨`,
-    { parse_mode: "Markdown", reply_markup: profileCreatedKeyboard },
+    { parse_mode: "Markdown", reply_markup: profileCreatedKeyboard }
   );
 
   await menuCommand(ctx as MyContext);
