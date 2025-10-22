@@ -1,9 +1,9 @@
 import type { MyContext } from "..";
 import db from "../lib/db";
+import { config } from "../lib/env";
 
 export const resetProfile = async (ctx: MyContext) => {
-  const adminId = process.env.ADMIN_CHAT_ID;
-  if (!adminId || ctx.from?.id.toString() !== adminId) return;
+  if (ctx.from?.id.toString() !== config.ADMIN_CHAT_ID) return;
 
   const userId = ctx.from?.id;
   if (!userId) return;

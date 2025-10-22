@@ -21,7 +21,9 @@ export const menuCommandKeyboard = async (ctx: MyContext) => {
     .text(`💕 Метчи (${countOfMatches})`, "matches")
     .text(`👍 Лайки (${countOfLikes})`, "likes")
     .row()
-    .text("👤 Моя анкета", "my-profile");
+    .text("👤 Моя анкета", "my-profile")
+    .row()
+    .url("📱 Наш ТГК", "https://t.me/mireamour");
 
   return keyboard;
 };

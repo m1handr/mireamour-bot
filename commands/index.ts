@@ -6,6 +6,7 @@ import { resetLikes } from "./resetLikes";
 import { resetProfile } from "./resetProfile";
 import { startCommand } from "./start";
 import { statsCommand } from "./stats";
+import { findUserCommand, userLogsCommand } from "./userLogs";
 
 export const commands = new Composer<MyContext>();
 
@@ -15,3 +16,5 @@ commands.command("resetProfile", resetProfile);
 commands.command("resetLikes", resetLikes);
 commands.command("stats", statsCommand);
 commands.command("statistics", detailedStatsCommand);
+commands.command("userlogs", userLogsCommand);
+commands.command("finduser", findUserCommand);

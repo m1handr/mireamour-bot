@@ -1,9 +1,9 @@
 import { InlineKeyboard } from "grammy";
 import type { MyContext } from "..";
+import { config } from "../lib/env";
 
 export const detailedStatsCommand = async (ctx: MyContext) => {
-  const adminId = process.env.ADMIN_CHAT_ID;
-  if (!adminId || ctx.from?.id.toString() !== adminId) return;
+  if (ctx.from?.id.toString() !== config.ADMIN_CHAT_ID) return;
 
   const keyboard = new InlineKeyboard()
     .text("📊 Общая", "stats_full")

@@ -1,10 +1,10 @@
 import type { MyContext } from "..";
+import { config } from "../lib/env";
 import { logger } from "../lib/logger";
 import { statsService } from "../lib/statistics";
 
 export const statsCommand = async (ctx: MyContext) => {
-  const adminId = process.env.ADMIN_CHAT_ID;
-  if (!adminId || ctx.from?.id.toString() !== adminId) return;
+  if (ctx.from?.id.toString() !== config.ADMIN_CHAT_ID) return;
 
   try {
     await ctx.reply("📊 Собираю статистику...");
