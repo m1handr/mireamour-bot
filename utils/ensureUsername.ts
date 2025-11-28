@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
 
 export const ensureUsername = async (ctx: MyContext) => {

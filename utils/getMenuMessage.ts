@@ -1,7 +1,11 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
+import type { University } from "../lib/generated/prisma";
 
-export const getMenuMessage = async (ctx: MyContext) => {
+export const getMenuMessage = async (
+  ctx: MyContext,
+  university: University
+) => {
   const userId = ctx.from?.id;
   if (!userId) return "Привет, незнакомец!";
 
@@ -15,13 +19,30 @@ export const getMenuMessage = async (ctx: MyContext) => {
   const countOfLikes = await db.like.count({
     where: {
       type: "like",
+      fromUser: {
+        university,
+      },
+      toUser: {
+        university,
+      },
     },
   });
-  const countOfMatches = await db.match.count();
+
+  const countOfMatches = await db.match.count({
+    where: {
+      userA: {
+        university,
+      },
+      userB: {
+        university,
+      },
+    },
+  });
 
   const countOfProfiles = await db.user.count({
     where: {
       isVisible: true,
+      university,
     },
   });
 

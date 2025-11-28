@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 
 export const removeLastProfileButtons = async (ctx: MyContext) => {
   const userId = ctx.from?.id.toString();
@@ -9,7 +9,7 @@ export const removeLastProfileButtons = async (ctx: MyContext) => {
       await ctx.api.editMessageReplyMarkup(
         userId,
         ctx.session.lastProfileMessageId,
-        { reply_markup: undefined },
+        { reply_markup: undefined }
       );
       ctx.session.lastProfileMessageId = null;
     } catch {}

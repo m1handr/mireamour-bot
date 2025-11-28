@@ -1,13 +1,16 @@
 import { ArkErrors, type } from "arktype";
 
 export const envSchema = type({
-  TELEGRAM_BOT_TOKEN: "string",
+  MIREA_BOT_TOKEN: "string",
+  MIIT_BOT_TOKEN: "string",
+  MIREA_CHANNEL_USERNAME: "string",
+  MIIT_CHANNEL_USERNAME: "string",
+  MIREA_CHANNEL_ID: "string",
+  MIIT_CHANNEL_ID: "string",
+  ADMIN_CHAT_ID: "string",
   DATABASE_URL: "string",
   S3_KEY_ID: "string",
   S3_SECRET_KEY: "string",
-  CHANNEL_ID: "string",
-  CHANNEL_USERNAME: "string",
-  ADMIN_CHAT_ID: "string",
   NODE_ENV: "string?",
   LOG_LEVEL: "string?",
 });

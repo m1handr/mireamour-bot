@@ -1,5 +1,5 @@
 import { InputMediaBuilder } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { rateLikesProfilesKeyboard } from "../keyboards/rateLikesProfilesKeyboard";
 import db from "../lib/db";
 import { getProfileMessage } from "../utils/getProfileMessage";
@@ -35,7 +35,7 @@ export const showCurrentLike = async (ctx: MyContext, userIndex?: number) => {
     InputMediaBuilder.photo(user.imageUrls[0], {
       caption: getProfileMessage(user, true),
       parse_mode: "HTML",
-    }),
+    })
   );
 
   await ctx.editMessageReplyMarkup({

@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { backKeyboard } from "../keyboards/backKeyboard";
 import db from "../lib/db";
 import { showCurrentMatch } from "./showCurrentMatch";

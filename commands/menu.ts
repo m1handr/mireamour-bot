@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { menuCommandKeyboard } from "../keyboards/menuCommandKeyboard";
 import { ensureUsername } from "../utils/ensureUsername";
 import { getMenuMessage } from "../utils/getMenuMessage";
@@ -6,7 +6,7 @@ import { isSubscribed } from "../utils/isSubscribed";
 import { removeLastProfileButtons } from "../utils/removeLastProfileButtons";
 
 export const menuCommand = async (ctx: MyContext) => {
-  const message = await getMenuMessage(ctx);
+  const message = await getMenuMessage(ctx, ctx.botConfig.name);
 
   await removeLastProfileButtons(ctx);
   await ensureUsername(ctx);

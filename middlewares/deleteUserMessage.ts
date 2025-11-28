@@ -1,5 +1,5 @@
 import type { NextFunction } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 
 export const deleteUserMessage = async (ctx: MyContext, next: NextFunction) => {
   const chatId = ctx.chat?.id;

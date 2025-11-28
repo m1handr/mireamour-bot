@@ -1,12 +1,11 @@
-import type { MyContext } from "..";
-import { config } from "../lib/env";
+import type { MyContext } from "../bot-fabric";
 
 export const isSubscribed = async (ctx: MyContext) => {
   const userId = ctx.from?.id;
   if (!userId) return;
 
   try {
-    const member = await ctx.api.getChatMember(config.CHANNEL_ID, userId);
+    const member = await ctx.api.getChatMember(ctx.botConfig.channelId, userId);
 
     if (
       member.status === "left" ||
@@ -22,13 +21,13 @@ export const isSubscribed = async (ctx: MyContext) => {
               [
                 {
                   text: "🔗 Перейти к каналу",
-                  url: `https://t.me/${config.CHANNEL_USERNAME}`,
+                  url: `https://t.me/${ctx.botConfig.channelUsername}`,
                 },
               ],
               [{ text: "✅ Проверить подписку", callback_data: "check-sub" }],
             ],
           },
-        },
+        }
       );
       return false;
     }

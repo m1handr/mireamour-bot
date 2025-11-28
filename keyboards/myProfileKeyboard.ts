@@ -1,5 +1,5 @@
 import { InlineKeyboard } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
 
 export const myProfileKeyboard = async (ctx: MyContext) => {

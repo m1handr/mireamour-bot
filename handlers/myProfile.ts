@@ -1,5 +1,5 @@
 import { InputMediaBuilder } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { myProfileKeyboard } from "../keyboards/myProfileKeyboard";
 import db from "../lib/db";
 import { getProfileMessage } from "../utils/getProfileMessage";
@@ -19,7 +19,7 @@ export const myProfile = async (ctx: MyContext) => {
       InputMediaBuilder.photo(existUser.imageUrls[0], {
         caption: getProfileMessage(existUser),
         parse_mode: "HTML",
-      }),
+      })
     );
     const keyboard = await myProfileKeyboard(ctx);
     await ctx.editMessageReplyMarkup({
@@ -28,7 +28,7 @@ export const myProfile = async (ctx: MyContext) => {
   } else {
     await ctx.editMessageText(
       "Похоже, твоя анкета для знакомства ещё не заполнена 😅\n\n" +
-        "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨",
+        "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨"
     );
     await ctx.conversation.enter("create-profile");
   }

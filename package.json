@@ -25,8 +25,6 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^6.17.1",
     "arktype": "^2.1.22",
-    "drizzle-kit": "^0.31.5",
-    "drizzle-orm": "^0.44.6",
     "grammy": "^1.38.3",
     "pg": "^8.16.3",
     "pino": "^10.1.0",

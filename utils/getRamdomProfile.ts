@@ -1,11 +1,12 @@
 import db from "../lib/db";
-import type { Gender, User } from "../lib/generated/prisma";
+import type { Gender, University, User } from "../lib/generated/prisma";
 
 const LIKE_EXPIRATION_DAYS = 90;
 
 export async function getRandomProfile(
   userId: string,
   gender: Gender,
+  university: University
 ): Promise<User | null> {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() - LIKE_EXPIRATION_DAYS);
@@ -15,6 +16,7 @@ export async function getRandomProfile(
       id: { not: userId },
       isVisible: true,
       gender,
+      university,
       likesReceived: {
         none: {
           fromUserId: userId,

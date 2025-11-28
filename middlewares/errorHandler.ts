@@ -1,10 +1,10 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { config } from "../lib/env";
 import { logger } from "../lib/logger";
 
 export const errorHandler = async (
   ctx: MyContext,
-  next: () => Promise<void>,
+  next: () => Promise<void>
 ) => {
   try {
     await next();
@@ -19,7 +19,7 @@ export const errorHandler = async (
         stack,
         userId: ctx.from?.id,
       },
-      `Ошибка в обработчике для пользователя ${ctx.from?.id}`,
+      `Ошибка в обработчике для пользователя ${ctx.from?.id}`
     );
 
     try {
@@ -32,7 +32,7 @@ export const errorHandler = async (
       try {
         await ctx.api.sendMessage(
           config.ADMIN_CHAT_ID,
-          `🚨 Критическая ошибка у пользователя ${ctx.from?.id}:\n${errorMessage}`,
+          `🚨 Критическая ошибка у пользователя ${ctx.from?.id}:\n${errorMessage}`
         );
       } catch (adminError) {
         logger.error(adminError, "Не удалось уведомить админа");

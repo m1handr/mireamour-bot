@@ -1,5 +1,5 @@
-import type { MyContext } from "..";
-import { detailedStatsCommand } from "../commands/detailedStats";
+import type { MyContext } from "../bot-fabric";
+import { statsCommand } from "../commands/stats";
 import { logger } from "../lib/logger";
 import { statsService } from "../lib/statistics";
 
@@ -57,12 +57,12 @@ export const handleStatsUsers = async (ctx: MyContext) => {
 ├ Парней: ${userStats.byGender.male} (${(
       (userStats.byGender.male /
         (userStats.byGender.male + userStats.byGender.female)) *
-        100
+      100
     ).toFixed(1)}%)
 └ Девушек: ${userStats.byGender.female} (${(
       (userStats.byGender.female /
         (userStats.byGender.male + userStats.byGender.female)) *
-        100
+      100
     ).toFixed(1)}%)
 
 🎂 *По возрасту:*
@@ -154,7 +154,7 @@ export const handleStatsQuick = async (ctx: MyContext) => {
 
 export const handleStatsRefresh = async (ctx: MyContext) => {
   await ctx.answerCallbackQuery({ text: "🔄 Обновляем..." });
-  await detailedStatsCommand(ctx);
+  await statsCommand(ctx);
 };
 
 export const handleStatsReports = async (ctx: MyContext) => {

@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
 import { config } from "../lib/env";
 
@@ -10,8 +10,7 @@ export const userLogsCommand = async (ctx: MyContext) => {
 
   if (!targetUserId) {
     await ctx.reply(
-      "Использование: /userlogs [user_id]\n\n" +
-        "Пример: /userlogs 123456789 5",
+      "Использование: /userlogs [user_id]\n\n" + "Пример: /userlogs 123456789 5"
     );
     return;
   }
@@ -62,7 +61,7 @@ export const findUserCommand = async (ctx: MyContext) => {
     await ctx.reply(
       "Использование: /finduser <имя или username>\n\n" +
         "Пример: /finduser Ivan\n" +
-        "Пример: /finduser @username",
+        "Пример: /finduser @username"
     );
     return;
   }
@@ -97,7 +96,7 @@ export const findUserCommand = async (ctx: MyContext) => {
         (user) =>
           `├ ${user.name || "Без имени"} (${
             user.username ? `@${user.username}` : "нет username"
-          }) - ID: ${user.id}`,
+          }) - ID: ${user.id}`
       )
       .join("\n");
 

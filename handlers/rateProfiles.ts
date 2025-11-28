@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { backKeyboard } from "../keyboards/backKeyboard";
 import { rateProfileKeyboard } from "../keyboards/rateProfileKeyboard";
 import db from "../lib/db";
@@ -24,7 +24,7 @@ export const rateProfiles = async (ctx: MyContext) => {
         "Чтобы другие могли тебя найти и познакомиться, нужно её создать ✨",
       {
         reply_markup: backKeyboard,
-      },
+      }
     );
 
   if (!existUser.isVisible)
@@ -32,12 +32,13 @@ export const rateProfiles = async (ctx: MyContext) => {
       "👀 Чтобы смотреть анкеты других, включи видимость своей профиля в настройках.",
       {
         reply_markup: backKeyboard,
-      },
+      }
     );
 
   const profile = await getRandomProfile(
     userId,
     existUser.gender === "male" ? "female" : "male",
+    ctx.botConfig.name
   );
 
   if (!profile)
@@ -45,7 +46,7 @@ export const rateProfiles = async (ctx: MyContext) => {
       "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
       {
         reply_markup: backKeyboard,
-      },
+      }
     );
 
   if (!profile.imageUrls[0]) return;

@@ -1,16 +1,17 @@
 import type { Conversation } from "@grammyjs/conversations";
-import type { Context } from "grammy";
 import { randomUUID } from "node:crypto";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { menuCommand } from "../commands/menu";
 import { profileCreatedKeyboard } from "../keyboards/profileCreatedKeyboard";
 import db from "../lib/db";
-import { config } from "../lib/env";
 import type { Gender } from "../lib/generated/prisma";
 import { S3_BUCKET_NAME, S3_ENDPOINT, s3 } from "../lib/s3";
 import { optimizeImage } from "../utils/optimizeImage";
 
-export const createProfile = async (conv: Conversation, ctx: Context) => {
+export const createProfile = async (
+  conv: Conversation<MyContext>,
+  ctx: MyContext
+) => {
   let age: number | null = null;
   let gender: Gender | null = null;
   let description: string | null = null;
@@ -132,7 +133,7 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     }
 
     const fileInfo = await ctx.api.getFile(photo.file_id);
-    const fileUrl = `https://api.telegram.org/file/bot${config.TELEGRAM_BOT_TOKEN}/${fileInfo.file_path}`;
+    const fileUrl = `https://api.telegram.org/file/bot${ctx.api.token}/${fileInfo.file_path}`;
 
     const response = await fetch(fileUrl);
     const buffer = Buffer.from(await response.arrayBuffer());
@@ -170,5 +171,5 @@ export const createProfile = async (conv: Conversation, ctx: Context) => {
     { parse_mode: "Markdown", reply_markup: profileCreatedKeyboard }
   );
 
-  await menuCommand(ctx as MyContext);
+  await menuCommand(ctx);
 };

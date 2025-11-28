@@ -1,5 +1,5 @@
 import { InputMediaBuilder } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { backKeyboard } from "../keyboards/backKeyboard";
 import { matchesKeyboard } from "../keyboards/matchesKeyboard";
 import { getProfileMessage } from "../utils/getProfileMessage";
@@ -31,7 +31,7 @@ export async function showCurrentMatch(ctx: MyContext) {
     InputMediaBuilder.photo(matchUser.imageUrls[0], {
       caption: getProfileMessage(matchUser, true),
       parse_mode: "HTML",
-    }),
+    })
   );
   await ctx.editMessageReplyMarkup({
     reply_markup: matchesList.length > 1 ? matchesKeyboard : backKeyboard,

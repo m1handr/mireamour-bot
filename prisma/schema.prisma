@@ -25,17 +25,23 @@ enum LikeType {
   dislike
 }
 
+enum University {
+  mirea
+  miit
+}
+
 model User {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   username    String?
   age         Int?
-  gender      Gender   @default(none)
+  gender      Gender     @default(none)
   description String?
   imageUrls   String[]
-  isVisible   Boolean  @default(false)
-  role        UserRole @default(default)
-  createdAt   DateTime @default(now())
+  isVisible   Boolean    @default(false)
+  role        UserRole   @default(default)
+  university  University
+  createdAt   DateTime   @default(now())
 
   likesSent     Like[] @relation("likesSent")
   likesReceived Like[] @relation("likesReceived")

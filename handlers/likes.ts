@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { getUsersWhoLikedMe } from "../utils/getUsersWhoLikedMe";
 import { showCurrentLike } from "./showCurrentLike";
 

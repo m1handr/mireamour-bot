@@ -1,5 +1,5 @@
 import { InlineKeyboard } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
 
 export const menuCommandKeyboard = async (ctx: MyContext) => {
@@ -23,7 +23,7 @@ export const menuCommandKeyboard = async (ctx: MyContext) => {
     .row()
     .text("👤 Моя анкета", "my-profile")
     .row()
-    .url("📱 Наш ТГК", "https://t.me/mireamour");
+    .url("📱 Наш ТГК", `https://t.me/${ctx.botConfig.channelUsername}`);
 
   return keyboard;
 };

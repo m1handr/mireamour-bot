@@ -1,4 +1,4 @@
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import { reportReasonKeyboard } from "../keyboards/reportReasonKeyboard";
 import db from "../lib/db";
 import { notifyAdminAboutReport } from "../utils/notifyAdminAboutReport";

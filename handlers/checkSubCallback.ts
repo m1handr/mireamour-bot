@@ -1,9 +1,8 @@
-import type { MyContext } from "..";
-import { config } from "../lib/env";
+import type { MyContext } from "../bot-fabric";
 import { menu } from "./menu";
 
 export const checkSubCallback = async (ctx: MyContext) => {
-  const channelId = config.CHANNEL_ID;
+  const channelId = ctx.botConfig.channelId;
   const userId = ctx.from?.id;
   if (!channelId || !userId) return;
 

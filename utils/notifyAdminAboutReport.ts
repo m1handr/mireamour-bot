@@ -1,5 +1,5 @@
 import { InlineKeyboard } from "grammy";
-import type { MyContext } from "..";
+import type { MyContext } from "../bot-fabric";
 import db from "../lib/db";
 import { config } from "../lib/env";
 import { getProfileMessage } from "./getProfileMessage";
@@ -8,7 +8,7 @@ export async function notifyAdminAboutReport(
   ctx: MyContext,
   targetId: string,
   reporterId: string,
-  reason: string,
+  reason: string
 ) {
   const targetUser = await db.user.findUnique({
     where: { id: targetId },
@@ -28,7 +28,7 @@ export async function notifyAdminAboutReport(
 
   const keyboard = new InlineKeyboard().text(
     "🚫 Заблокировать пользователя",
-    `ban-user-${targetId}`,
+    `ban-user-${targetId}`
   );
 
   const profileText = getProfileMessage(targetUser);
