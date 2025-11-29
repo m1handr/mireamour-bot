@@ -1,9 +1,6 @@
 import type { MyContext } from "../bot-fabric";
 import { backKeyboard } from "../keyboards/backKeyboard";
-import { rateProfileKeyboard } from "../keyboards/rateProfileKeyboard";
 import db from "../lib/db";
-import { getProfileMessage } from "../utils/getProfileMessage";
-import { getRandomProfile } from "../utils/getRamdomProfile";
 import { removeLastProfileButtons } from "../utils/removeLastProfileButtons";
 
 export const rateProfiles = async (ctx: MyContext) => {
@@ -35,34 +32,43 @@ export const rateProfiles = async (ctx: MyContext) => {
       }
     );
 
-  const profile = await getRandomProfile(
-    userId,
-    existUser.gender === "male" ? "female" : "male",
-    ctx.botConfig.name
+  await ctx.answerCallbackQuery();
+
+  return await ctx.reply(
+    `Бот откроется, когда соберется достаточно анкет! Создать анкету можно перейдя по кнопке "Мой профиль" в главном меню. \n\nСледить за обнолевниями можно в нашем ТГК 👇\nhttps://t.me/${ctx.botConfig.channelUsername}`,
+    {
+      reply_markup: backKeyboard,
+    }
   );
 
-  if (!profile)
-    return await ctx.reply(
-      "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
-      {
-        reply_markup: backKeyboard,
-      }
-    );
+  // const profile = await getRandomProfile(
+  //   userId,
+  //   existUser.gender === "male" ? "female" : "male",
+  //   ctx.botConfig.name
+  // );
 
-  if (!profile.imageUrls[0]) return;
+  // if (!profile)
+  //   return await ctx.reply(
+  //     "Доступные анкеты закончились 😔\n\nЗагляни попозже — кто-нибудь точно появится!",
+  //     {
+  //       reply_markup: backKeyboard,
+  //     }
+  //   );
 
-  const sentMessage = await ctx.replyWithPhoto(profile.imageUrls[0], {
-    caption: getProfileMessage(profile),
-    parse_mode: "HTML",
-    reply_markup: rateProfileKeyboard,
-  });
+  // if (!profile.imageUrls[0]) return;
 
-  await ctx.editMessageReplyMarkup({
-    reply_markup: rateProfileKeyboard,
-  });
+  // const sentMessage = await ctx.replyWithPhoto(profile.imageUrls[0], {
+  //   caption: getProfileMessage(profile),
+  //   parse_mode: "HTML",
+  //   reply_markup: rateProfileKeyboard,
+  // });
 
-  ctx.session.currentProfileId = profile.id;
-  ctx.session.lastProfileMessageId = sentMessage.message_id;
+  // await ctx.editMessageReplyMarkup({
+  //   reply_markup: rateProfileKeyboard,
+  // });
 
-  await ctx.answerCallbackQuery();
+  // ctx.session.currentProfileId = profile.id;
+  // ctx.session.lastProfileMessageId = sentMessage.message_id;
+
+  // await ctx.answerCallbackQuery();
 };
